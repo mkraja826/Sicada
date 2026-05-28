@@ -498,7 +498,7 @@ export default function StaffingWebsite() {
 
         <div className="grid sm:grid-cols-2 gap-6 flex-1">
 
-          <div className="rounded-3xl border border-orange-700 p-6 bg-white text-slate-900">
+          <div className="rounded-3xl border border-orange-700 p-6 bg-white text-slate-900 h-full">
             <div className="text-slate-900 text-3xl mb-4">
               📧
             </div>
@@ -512,7 +512,7 @@ export default function StaffingWebsite() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-orange-700 p-6 bg-white">
+          <div className="rounded-3xl border border-orange-700 p-6 bg-white h-full">
             <div className="text-orange-400 text-3xl mb-4">
               📞
             </div>
@@ -526,7 +526,7 @@ export default function StaffingWebsite() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-orange-700 p-6 bg-white">
+          <div className="rounded-3xl border border-orange-700 p-6 bg-white h-full">
             <div className="text-orange-400 text-3xl mb-4">
               🌍
             </div>
@@ -540,7 +540,7 @@ export default function StaffingWebsite() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-orange-700 p-6 bg-white">
+          <div className="rounded-3xl border border-orange-700 p-6 bg-white h-full">
             <div className="text-slate-900 text-3xl mb-4">
               ⏱
             </div>
