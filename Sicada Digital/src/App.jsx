@@ -482,7 +482,7 @@ export default function StaffingWebsite() {
     <div className="grid lg:grid-cols-2 gap-12">
 
       {/* Left Side */}
-      <div className="space-y-8">
+      <div className="space-y-8 h-full flex flex-col justify-between">
 
         <div className="rounded-3xl border border-white bg-orange-700 p-8">
           <h3 className="text-2xl text-white font-semibold mb-4">
@@ -496,7 +496,7 @@ export default function StaffingWebsite() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-6 flex-1">
 
           <div className="rounded-3xl border border-orange-700 p-6 bg-white text-slate-900">
             <div className="text-slate-900 text-3xl mb-4">
