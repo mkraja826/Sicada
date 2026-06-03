@@ -600,7 +600,7 @@ export default function StaffingWebsite() {
 
     <div>
       <label className="block mb-3 text-sm font-medium text-slate-700">
-        Email Address
+        Email
       </label>
 
       <input
