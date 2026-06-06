@@ -1,4 +1,4 @@
-function Footer() {
+function Foot() {
   return (
     
       <footer className="bg-orange-950 text-slate-300">
@@ -84,4 +84,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default Foot;
