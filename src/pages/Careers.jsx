@@ -131,13 +131,11 @@ export default function Careers() {
           </p>
 
           <a
-            href="https://forms.google.com"
-            target="_blank"
-            rel="noreferrer"
-            className="bg-orange-700 text-white px-8 py-4 rounded-xl inline-block"
-          >
-            Submit Resume
-          </a>
+  href="mailto:hr@sicadadigital.com?subject=Job Application - Sicada Digital&body=Hello Sicada Digital HR,%0D%0A%0D%0AI would like to apply for a role.%0D%0A%0D%0AName:%0D%0APhone:%0D%0APosition:%0D%0ALinkedIn:%0D%0A%0D%0AI have attached my resume.%0D%0A%0D%0AThank you."
+  className="bg-orange-700 text-white px-8 py-4 rounded-xl inline-block font-semibold hover:bg-orange-800 transition"
+>
+  Email Your Resume
+</a>
 
         </div>
       </section>
