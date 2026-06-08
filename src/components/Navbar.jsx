@@ -33,10 +33,10 @@ function Navbar() {
         </nav>
 
         <a
-          href="/contact"
+          href="/AdminLogin"
           className="hidden md:inline-block bg-orange-700 hover:bg-orange-800 text-white px-5 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
         >
-          Get Started
+          Admin
         </a>
 
         {/* Mobile Burger */}
@@ -86,11 +86,11 @@ function Navbar() {
             </a>
 
             <a
-              href="/contact"
+              href="/AdminLogin"
               onClick={() => setOpen(false)}
               className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl text-center font-semibold transition shadow-sm"
             >
-              Get Started
+              Admin 
             </a>
           </nav>
         </div>

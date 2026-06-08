@@ -1,4 +1,6 @@
-
+import { useState } from "react";
+import { db } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Mail,
   Phone,
@@ -8,6 +10,54 @@ import {
 } from "lucide-react";
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  company: "",
+  inquiryType: "",
+  message: "",
+});
+
+const [loading, setLoading] = useState(false);
+
+function handleChange(e) {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    await addDoc(collection(db, "enquiries"), {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      company: formData.company,
+      inquiryType: formData.inquiryType,
+      message: formData.message,
+      createdAt: serverTimestamp(),
+    });
+
+    alert("Your enquiry has been submitted successfully!");
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      company: "",
+      inquiryType: "",
+      message: "",
+    });
+  } catch (error) {
+    alert("Something went wrong. Please try again.");
+  }
+
+  setLoading(false);
+}
   return (
     <div className="min-h-screen bg-white">
      
@@ -112,59 +162,81 @@ export default function Contact() {
               Send Us a Message
             </h2>
 
-            <form className="space-y-6">
+           <form onSubmit={handleSubmit} className="space-y-6">
+  <div className="grid md:grid-cols-2 gap-6">
+    <input
+      type="text"
+      name="firstName"
+      value={formData.firstName}
+      onChange={handleChange}
+      placeholder="First Name"
+      className="w-full border border-slate-300 rounded-xl px-4 py-4"
+      required
+    />
 
-              <div className="grid md:grid-cols-2 gap-6">
+    <input
+      type="text"
+      name="lastName"
+      value={formData.lastName}
+      onChange={handleChange}
+      placeholder="Last Name"
+      className="w-full border border-slate-300 rounded-xl px-4 py-4"
+      required
+    />
+  </div>
 
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  className="w-full border border-slate-300 rounded-xl px-4 py-4"
-                />
+  <input
+    type="email"
+    name="email"
+    value={formData.email}
+    onChange={handleChange}
+    placeholder="Email Address"
+    className="w-full border border-slate-300 rounded-xl px-4 py-4"
+    required
+  />
 
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  className="w-full border border-slate-300 rounded-xl px-4 py-4"
-                />
+  <input
+    type="text"
+    name="company"
+    value={formData.company}
+    onChange={handleChange}
+    placeholder="Company Name"
+    className="w-full border border-slate-300 rounded-xl px-4 py-4"
+  />
 
-              </div>
+  <select
+    name="inquiryType"
+    value={formData.inquiryType}
+    onChange={handleChange}
+    className="w-full border border-slate-300 rounded-xl px-4 py-4"
+    required
+  >
+    <option value="">Select Inquiry Type</option>
+    <option value="IT Staffing">IT Staffing</option>
+    <option value="Consulting">Consulting</option>
+    <option value="Project Delivery">Project Delivery</option>
+    <option value="Partnership">Partnership</option>
+  </select>
 
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
-              />
+  <textarea
+    name="message"
+    value={formData.message}
+    onChange={handleChange}
+    rows="6"
+    placeholder="Tell us about your requirements..."
+    className="w-full border border-slate-300 rounded-xl px-4 py-4"
+    required
+  />
 
-              <input
-                type="text"
-                placeholder="Company Name"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
-              />
-
-              <select className="w-full border border-slate-300 rounded-xl px-4 py-4">
-                <option>Select Inquiry Type</option>
-                <option>IT Staffing</option>
-                <option>Consulting</option>
-                <option>Project Delivery</option>
-                <option>Partnership</option>
-              </select>
-
-              <textarea
-                rows="6"
-                placeholder="Tell us about your requirements..."
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
-              />
-
-              <button
-                type="submit"
-                className="w-full bg-orange-700 hover:bg-orange-800 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition"
-              >
-                <Send size={18} />
-                Submit Inquiry
-              </button>
-
-            </form>
+  <button
+    type="submit"
+    disabled={loading}
+    className="w-full bg-orange-700 hover:bg-orange-800 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition disabled:opacity-60"
+  >
+    <Send size={18} />
+    {loading ? "Submitting..." : "Submit Inquiry"}
+  </button>
+</form>
 
           </div>
 
