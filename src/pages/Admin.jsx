@@ -1,104 +1,61 @@
 import { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { FileText, Mail, Users } from "lucide-react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function Admin() {
   const [applications, setApplications] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
-  const [checking, setChecking] = useState(true);
-
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    if (!currentUser) {
-      window.location.href = "/admin-login";
-    } else {
-      setChecking(false);
-    }
-  });
-
-  return () => unsubscribe();
-}, []);
-
-if (checking) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-slate-600">Checking admin access...</p>
-    </div>
-  );
-}
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
-      const appsQuery = query(
-        collection(db, "applications"),
-        orderBy("createdAt", "desc")
-      );
+    async function fetchAdminData() {
+      try {
+        const res = await fetch("/api/admin");
+        const data = await res.json();
 
-      const enquiriesQuery = query(
-        collection(db, "enquiries"),
-        orderBy("createdAt", "desc")
-      );
-
-      const appsSnapshot = await getDocs(appsQuery);
-      const enquiriesSnapshot = await getDocs(enquiriesQuery);
-
-      setApplications(
-        appsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-      );
-
-      setEnquiries(
-        enquiriesSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-      );
+        setApplications(data.applications || []);
+        setEnquiries(data.enquiries || []);
+      } catch (error) {
+        console.error("Admin fetch error:", error);
+        alert("Failed to load admin data");
+      } finally {
+        setLoading(false);
+      }
     }
 
-    fetchData();
+    fetchAdminData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading admin data...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
-     
-
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6">
 
-  <div className="flex items-center justify-between mb-8">
-    <div>
-      <div className="flex items-center justify-between gap-6">
-  <div>
-    <h1 className="text-4xl font-bold text-slate-900">
-      Admin Dashboard
-    </h1>
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h1 className="text-4xl font-bold text-slate-900">
+                Admin Dashboard
+              </h1>
 
-    <p className="mt-3 text-slate-600">
-      View resumes, job applications and client enquiries.
-    </p>
-  </div>
+              <p className="mt-3 text-slate-600">
+                View job applications and client enquiries.
+              </p>
+            </div>
 
-  <button
-    onClick={() => signOut(auth)}
-    className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl font-semibold"
-  >
-    Logout
-  </button>
-</div>
-    </div>
-
-    <button
-      onClick={() => signOut(auth)}
-      className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl font-semibold"
-    >
-      Logout
-    </button>
-  </div>
+            <a
+              href="/"
+              className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl font-semibold"
+            >
+              Back to Website
+            </a>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             <div className="bg-white rounded-3xl p-6 shadow-sm border">
@@ -116,9 +73,9 @@ if (checking) {
             <div className="bg-white rounded-3xl p-6 shadow-sm border">
               <FileText className="text-orange-700 mb-4" />
               <h3 className="text-3xl font-bold">
-                {applications.filter((item) => item.resumeURL).length}
+                {applications.filter((item) => item.resumeLink).length}
               </h3>
-              <p className="text-slate-500">Resumes</p>
+              <p className="text-slate-500">Resume Links</p>
             </div>
           </div>
 
@@ -129,33 +86,48 @@ if (checking) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b text-slate-600">
-                    <th className="py-3">Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Position</th>
-                    <th>Resume</th>
+                    <th className="py-3 pr-4">Name</th>
+                    <th className="pr-4">Email</th>
+                    <th className="pr-4">Phone</th>
+                    <th className="pr-4">Position</th>
+                    <th className="pr-4">LinkedIn</th>
+                    <th className="pr-4">Resume</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {applications.map((app) => (
                     <tr key={app.id} className="border-b">
-                      <td className="py-4">{app.name}</td>
-                      <td>{app.email}</td>
-                      <td>{app.phone}</td>
-                      <td>{app.position}</td>
-                      <td>
-                        {app.resumeURL ? (
+                      <td className="py-4 pr-4">{app.name}</td>
+                      <td className="pr-4">{app.email}</td>
+                      <td className="pr-4">{app.phone}</td>
+                      <td className="pr-4">{app.position}</td>
+                      <td className="pr-4">
+                        {app.linkedin ? (
                           <a
-                            href={app.resumeURL}
+                            href={app.linkedin}
                             target="_blank"
                             rel="noreferrer"
                             className="text-orange-700 font-semibold"
                           >
-                            Download
+                            View
                           </a>
                         ) : (
-                          "No file"
+                          "—"
+                        )}
+                      </td>
+                      <td className="pr-4">
+                        {app.resumeLink ? (
+                          <a
+                            href={app.resumeLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-orange-700 font-semibold"
+                          >
+                            View Resume
+                          </a>
+                        ) : (
+                          "No link"
                         )}
                       </td>
                     </tr>
@@ -163,7 +135,7 @@ if (checking) {
 
                   {applications.length === 0 && (
                     <tr>
-                      <td colSpan="5" className="py-6 text-slate-500">
+                      <td colSpan="6" className="py-6 text-slate-500">
                         No applications yet.
                       </td>
                     </tr>
@@ -182,6 +154,9 @@ if (checking) {
                   <h3 className="font-semibold">{item.name}</h3>
                   <p className="text-slate-500">{item.email}</p>
                   <p className="text-slate-500">{item.company}</p>
+                  <p className="text-sm text-orange-700 font-semibold mt-2">
+                    {item.inquiryType}
+                  </p>
                   <p className="mt-3 text-slate-700">{item.message}</p>
                 </div>
               ))}
@@ -191,6 +166,7 @@ if (checking) {
               )}
             </div>
           </div>
+
         </div>
       </section>
     </div>
