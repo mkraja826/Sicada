@@ -1,46 +1,57 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("hr@sicadadigital.com");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await fetch("/api/admin-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Invalid password");
+      }
+
       window.location.href = "/admin";
     } catch (error) {
-      alert("Invalid login details");
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-6">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
       <form
         onSubmit={handleLogin}
-        className="bg-white rounded-3xl p-8 shadow-xl w-full max-w-md"
+        className="bg-white rounded-3xl p-8 w-full max-w-md shadow-xl"
       >
         <h1 className="text-3xl font-bold mb-6">Admin Login</h1>
 
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border rounded-xl px-4 py-3 mb-4"
-        />
-
-        <input
           type="password"
-          placeholder="Password"
+          placeholder="Enter admin password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border rounded-xl px-4 py-3 mb-6"
+          required
         />
 
-        <button className="w-full bg-orange-700 text-white py-3 rounded-xl font-semibold">
-          Login
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-orange-700 text-white py-3 rounded-xl font-semibold"
+        >
+          {loading ? "Checking..." : "Login"}
         </button>
       </form>
     </div>
