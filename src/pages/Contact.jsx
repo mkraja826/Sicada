@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Mail,
   Phone,
@@ -33,14 +31,27 @@ async function handleSubmit(e) {
   setLoading(true);
 
   try {
-    await addDoc(collection(db, "enquiries"), {
-      name: `${formData.firstName} ${formData.lastName}`,
-      email: formData.email,
-      company: formData.company,
-      inquiryType: formData.inquiryType,
-      message: formData.message,
-      createdAt: serverTimestamp(),
+    const res = await fetch("/api/enquiries", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        company: formData.company,
+        inquiryType: formData.inquiryType,
+        message: formData.message,
+      }),
     });
+
+    const text = await res.text();
+    console.log("Enquiry API status:", res.status);
+    console.log("Enquiry API response:", text);
+
+    if (!res.ok) {
+      throw new Error(text || "Failed to submit enquiry");
+    }
 
     alert("Your enquiry has been submitted successfully!");
 
@@ -53,10 +64,11 @@ async function handleSubmit(e) {
       message: "",
     });
   } catch (error) {
-    alert("Something went wrong. Please try again.");
+    console.error("Enquiry submit error:", error);
+    alert(error.message);
+  } finally {
+    setLoading(false);
   }
-
-  setLoading(false);
 }
   return (
     <div className="min-h-screen bg-white">

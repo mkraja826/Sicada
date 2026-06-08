@@ -29,7 +29,7 @@ export default function Careers() {
     });
   }
 
-  async function handleSubmit(e) {
+ async function handleSubmit(e) {
   e.preventDefault();
   setLoading(true);
 
@@ -45,8 +45,9 @@ export default function Careers() {
     });
 
     const text = await res.text();
-    console.log("API response status:", res.status);
-    console.log("API response text:", text);
+
+    console.log("API status:", res.status);
+    console.log("API response:", text);
 
     if (!res.ok) {
       throw new Error(text || "Submission failed");
