@@ -42,11 +42,18 @@ export default function Careers() {
         body: JSON.stringify(formData),
       });
 
-      const result = await res.json();
+      const text = await res.text();
 
-      if (!res.ok) {
-        throw new Error(result.error || "Submission failed");
-      }
+let result = {};
+try {
+  result = text ? JSON.parse(text) : {};
+} catch {
+  throw new Error("Server did not return valid JSON");
+}
+
+if (!res.ok) {
+  throw new Error(result.error || text || "Submission failed");
+}
 
       alert("Application submitted successfully!");
 
