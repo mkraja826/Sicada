@@ -30,48 +30,46 @@ export default function Careers() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await fetch("/api/applications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  try {
+    console.log("Sending application:", formData);
 
-      const text = await res.text();
+    const res = await fetch("/api/applications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-let result = {};
-try {
-  result = text ? JSON.parse(text) : {};
-} catch {
-  throw new Error("Server did not return valid JSON");
-}
+    const text = await res.text();
+    console.log("API response status:", res.status);
+    console.log("API response text:", text);
 
-if (!res.ok) {
-  throw new Error(result.error || text || "Submission failed");
-}
-
-      alert("Application submitted successfully!");
-
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        position: "",
-        linkedin: "",
-        resumeLink: "",
-        message: "",
-      });
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(text || "Submission failed");
     }
+
+    alert("Application submitted successfully!");
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      position: "",
+      linkedin: "",
+      resumeLink: "",
+      message: "",
+    });
+  } catch (error) {
+    console.error("Application submit error:", error);
+    alert(error.message);
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
