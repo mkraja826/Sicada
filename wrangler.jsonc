@@ -1,0 +1,13 @@
+{
+  "name": "sicadadigital",
+  "compatibility_date": "2026-06-08",
+  "pages_build_output_dir": "dist",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sicada-db",
+      "database_id": "17cabd2a-77cc-4637-a3e4-4090c59d74f8"
+    }
+  ]
+}
