@@ -55,6 +55,15 @@ export default function Admin() {
             >
               Back to Website
             </a>
+                      <button 
+                      className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl font-semibold"
+  onClick={async () => {
+    await fetch("/api/admin-logout");
+    window.location.href = "/adminlogin";
+  }}
+>
+  Logout
+</button>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mt-10">
@@ -164,14 +173,7 @@ export default function Admin() {
               {enquiries.length === 0 && (
                 <p className="text-slate-500">No enquiries yet.</p>
               )}
-              <button
-  onClick={async () => {
-    await fetch("/api/admin-logout");
-    window.location.href = "/adminlogin";
-  }}
->
-  Logout
-</button>
+    
             </div>
           </div>
 
