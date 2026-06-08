@@ -90,7 +90,7 @@ export default function About() {
               Our Values
             </p>
             <h2 className="mt-4 text-4xl lg:text-5xl font-bold">
-              What drives Sicada Digital
+              What drives Sicada Digital.
             </h2>
           </div>
 
