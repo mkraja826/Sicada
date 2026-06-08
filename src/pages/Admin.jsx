@@ -164,6 +164,14 @@ export default function Admin() {
               {enquiries.length === 0 && (
                 <p className="text-slate-500">No enquiries yet.</p>
               )}
+              <button
+  onClick={async () => {
+    await fetch("/api/admin-logout");
+    window.location.href = "/adminlogin";
+  }}
+>
+  Logout
+</button>
             </div>
           </div>
 
