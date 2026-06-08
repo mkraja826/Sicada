@@ -1,3 +1,9 @@
+export async function onRequestGet() {
+  return Response.json({
+    message: "Applications API is working"
+  });
+}
+
 export async function onRequestPost({ request, env }) {
   try {
     const data = await request.json();
@@ -8,13 +14,13 @@ export async function onRequestPost({ request, env }) {
       VALUES (?,?,?,?,?,?,?,?)`
     )
       .bind(
-        data.name,
-        data.email,
-        data.phone,
-        data.position,
-        data.linkedin,
-        data.resumeLink,
-        data.message,
+        data.name || "",
+        data.email || "",
+        data.phone || "",
+        data.position || "",
+        data.linkedin || "",
+        data.resumeLink || "",
+        data.message || "",
         new Date().toISOString()
       )
       .run();
