@@ -1,114 +1,192 @@
 import {
-  Users,
-  BriefcaseBusiness,
-  ShieldCheck,
+  ArrowRight,
+  CheckCircle2,
   Cloud,
   Code2,
   Database,
-  ArrowRight,
-  CheckCircle2,
-  Globe2,
-  Clock,
+  ShieldCheck,
+  Smartphone,
+  Bot,
   Building2,
-  Clock3,
+  Hospital,
+  Landmark,
+  Factory,
+  BarChart3,
+  Server,
 } from "lucide-react";
 
 export default function Home() {
   const services = [
-    { icon: Code2, title: "Software Engineering", text: "Skilled developers for enterprise applications." },
-    { icon: Cloud, title: "Cloud & DevOps", text: "Cloud, CI/CD, automation and deployment support." },
-    { icon: ShieldCheck, title: "Cybersecurity", text: "Security-focused professionals for regulated teams." },
-    { icon: Database, title: "Data Engineering", text: "Data pipelines, dashboards and analytics support." },
+    {
+      icon: Code2,
+      title: "Custom Software Development",
+      text: "Web platforms, enterprise portals, internal tools and scalable business applications.",
+    },
+    {
+      icon: Smartphone,
+      title: "Mobile App Development",
+      text: "Modern iOS and Android applications designed for performance, usability and growth.",
+    },
+    {
+      icon: Cloud,
+      title: "Cloud Engineering",
+      text: "Cloud migration, DevOps, CI/CD, automation, monitoring and infrastructure modernization.",
+    },
+    {
+      icon: Bot,
+      title: "AI & Automation",
+      text: "AI assistants, chatbots, workflow automation and intelligent business tools.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Cybersecurity",
+      text: "Security-first software, risk assessment, compliance support and system protection.",
+    },
+    {
+      icon: Database,
+      title: "Data & Analytics",
+      text: "Dashboards, reporting systems, data pipelines and business intelligence platforms.",
+    },
   ];
 
-  const steps = [
-    "Understand Requirements",
-    "Source Skilled Talent",
-    "Interview & Selection",
-    "Onboarding Support",
+  const industries = [
+    { icon: Building2, title: "Insurance" },
+    { icon: Hospital, title: "Healthcare" },
+    { icon: Landmark, title: "Finance" },
+    { icon: Factory, title: "Manufacturing" },
+  ];
+
+  const technologies = [
+    "React",
+    "Node.js",
+    "Next.js",
+    "TypeScript",
+    ".NET",
+    "Azure",
+    "AWS",
+    "PostgreSQL",
+    "Docker",
+    "Python",
+    "AI / ML",
+    "Cybersecurity",
   ];
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-     
-
-      <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-100 py-28">
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-orange-200 blur-3xl opacity-40" />
-
-        <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      {/* HERO */}
+      <section className="bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-5 py-2 text-sm font-semibold text-orange-700 mb-6">
-              <BriefcaseBusiness size={18} />
-              Enterprise IT Staffing Partner
-            </div>
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+              Sicada Digital
+            </p>
 
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
-              Technology Talent for Insurance & Enterprise Teams
+            <h1 className="mt-5 text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-slate-950">
+              Building software that powers modern business.
             </h1>
 
-            <p className="mt-6 text-lg text-slate-600 leading-relaxed max-w-xl">
-              Sicada Digital connects companies with skilled IT professionals
-              across software engineering, cloud, DevOps, cybersecurity, QA,
-              data, and business analysis.
+            <p className="mt-7 text-xl text-slate-600 leading-relaxed max-w-2xl">
+              Custom software development, cloud engineering, AI solutions,
+              cybersecurity, mobile applications and enterprise platforms for
+              growing businesses.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <a
-                href="#contact"
-                className="inline-flex items-center gap-2 rounded-2xl bg-orange-700 px-8 py-4 text-white font-semibold shadow-lg hover:bg-orange-800 transition"
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 font-semibold transition"
               >
-                Hire Talent <ArrowRight size={18} />
+                Talk to an expert <ArrowRight size={18} />
               </a>
 
               <a
                 href="/services"
-                className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 px-8 py-4 font-semibold hover:border-orange-700 hover:text-orange-700 transition"
+                className="inline-flex items-center gap-2 border border-slate-300 hover:border-slate-900 px-7 py-4 font-semibold transition"
               >
-                Explore Services
+                Explore services
               </a>
             </div>
-
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-5">
-              {[
-                ["150+", "Professionals"],
-                ["40+", "Clients"],
-                ["24h", "Response"],
-                ["2", "Countries"],
-              ].map(([num, label]) => (
-                <div key={label} className="rounded-3xl bg-white p-5 shadow-sm border border-orange-100">
-                  <h3 className="text-3xl font-bold text-orange-700">{num}</h3>
-                  <p className="mt-1 text-sm text-slate-500">{label}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className="relative">
-            <div className="rounded-[2.5rem] bg-slate-950 p-8 text-white shadow-2xl">
-              <div className="grid gap-5">
-                {[
-                  [Users, "Vetted IT Professionals", "Access skilled talent quickly."],
-                  [Building2, "Insurance Domain Focus", "Built for enterprise IT teams."],
-                  [Globe2, "Australia & India Delivery", "Flexible staffing support."],
-                ].map(([Icon, title, text]) => (
-                  <div key={title} className="rounded-3xl bg-white/10 border border-white/10 p-6">
-                    <div className="flex gap-5">
-                      <div className="h-14 w-14 rounded-2xl bg-orange-600 flex items-center justify-center">
-                        <Icon size={28} />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold">{title}</h3>
-                        <p className="mt-2 text-slate-300">{text}</p>
-                      </div>
+          {/* Dashboard Mockup */}
+          <div className="bg-slate-50 border border-slate-200 p-5 shadow-xl">
+            <div className="bg-white border border-slate-200">
+              <div className="h-12 border-b border-slate-200 flex items-center px-4 gap-2">
+                <span className="h-3 w-3 rounded-full bg-red-400"></span>
+                <span className="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span className="h-3 w-3 rounded-full bg-green-400"></span>
+              </div>
+
+              <div className="grid md:grid-cols-3">
+                <div className="bg-slate-950 text-white p-6 md:min-h-[420px]">
+                  <h3 className="text-lg font-semibold">Digital Platform</h3>
+
+                  <div className="mt-8 space-y-4">
+                    {["Dashboard", "Analytics", "Automation", "Security"].map(
+                      (item) => (
+                        <div
+                          key={item}
+                          className="bg-white/10 border border-white/10 px-4 py-3"
+                        >
+                          {item}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div className="md:col-span-2 p-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="border border-slate-200 p-5">
+                      <BarChart3 className="text-blue-600 mb-5" size={30} />
+                      <p className="text-sm text-slate-500">Projects</p>
+                      <h4 className="text-3xl font-semibold mt-2">24</h4>
+                    </div>
+
+                    <div className="border border-slate-200 p-5">
+                      <Server className="text-blue-600 mb-5" size={30} />
+                      <p className="text-sm text-slate-500">Automation</p>
+                      <h4 className="text-3xl font-semibold mt-2">86%</h4>
                     </div>
                   </div>
-                ))}
 
-                <div className="rounded-3xl bg-orange-700 p-7">
-                  <h3 className="text-2xl font-bold">Scale Your Tech Team</h3>
-                  <p className="mt-3 text-orange-100">
-                    Hire contract, permanent, remote, hybrid or project-based professionals.
-                  </p>
+                  <div className="mt-5 border border-slate-200 p-5">
+                    <p className="text-sm font-semibold text-slate-500">
+                      System Performance
+                    </p>
+
+                    <div className="mt-6 space-y-4">
+                      {[
+                        ["Cloud Reliability", "92%"],
+                        ["Security Readiness", "88%"],
+                        ["Delivery Efficiency", "95%"],
+                      ].map(([label, value]) => (
+                        <div key={label}>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>{label}</span>
+                            <span>{value}</span>
+                          </div>
+
+                          <div className="h-2 bg-slate-100">
+                            <div
+                              className="h-2 bg-blue-600"
+                              style={{ width: value }}
+                            ></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 bg-blue-600 text-white p-5">
+                    <h4 className="text-xl font-semibold">
+                      Enterprise-ready solutions
+                    </h4>
+
+                    <p className="mt-2 text-blue-50">
+                      Built for security, scale and long-term growth.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,287 +194,180 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trusted By */}
-    
-
-<section className="py-24 bg-slate-950 text-white">
-  <div className="max-w-7xl mx-auto px-6">
-
-    <div className="text-center max-w-3xl mx-auto">
-      <p className="text-orange-500 font-semibold uppercase tracking-wider text-sm">
-        WHY SICADA DIGITAL
-      </p>
-
-      <h2 className="mt-4 text-4xl lg:text-5xl font-bold">
-        Trusted Technology Staffing Partner
-      </h2>
-
-      <p className="mt-6 text-slate-400 text-lg">
-        We help enterprise organizations scale faster with skilled
-        technology professionals, domain expertise, and flexible
-        delivery models.
-      </p>
-    </div>
-
-    {/* Stats */}
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
-
-      <div className="text-center">
-        <h3 className="text-5xl font-bold text-orange-500">
-          150+
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Technology Professionals
-        </p>
-      </div>
-
-      <div className="text-center">
-        <h3 className="text-5xl font-bold text-orange-500">
-          40+
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Enterprise Projects
-        </p>
-      </div>
-
-      <div className="text-center">
-        <h3 className="text-5xl font-bold text-orange-500">
-          24h
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Response Time
-        </p>
-      </div>
-
-      <div className="text-center">
-        <h3 className="text-5xl font-bold text-orange-500">
-          2
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Countries Served
-        </p>
-      </div>
-
-    </div>
-
-    {/* Benefits */}
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
-
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-        <Users
-          size={42}
-          className="text-orange-500 mb-5"
-        />
-
-        <h3 className="text-xl font-semibold">
-          Skilled Talent
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Access highly qualified professionals across multiple technology domains.
-        </p>
-      </div>
-
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-        <Clock3
-          size={42}
-          className="text-orange-500 mb-5"
-        />
-
-        <h3 className="text-xl font-semibold">
-          Fast Hiring
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Accelerate hiring with a streamlined recruitment process.
-        </p>
-      </div>
-
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-        <ShieldCheck
-          size={42}
-          className="text-orange-500 mb-5"
-        />
-
-        <h3 className="text-xl font-semibold">
-          Enterprise Focus
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Experience supporting large-scale enterprise environments.
-        </p>
-      </div>
-
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-        <Globe2
-          size={42}
-          className="text-orange-500 mb-5"
-        />
-
-        <h3 className="text-xl font-semibold">
-          Global Delivery
-        </h3>
-
-        <p className="mt-3 text-slate-400">
-          Supporting teams across Australia, India and international markets.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-      {/* Why Sicada */}
-      <section className="py-24 bg-slate-50">
+      {/* SERVICES */}
+      <section className="bg-slate-50 py-24">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-orange-700 font-semibold uppercase tracking-wide text-sm">
-                Why Sicada Digital
-              </p>
-              <h2 className="mt-4 text-4xl lg:text-5xl font-bold leading-tight">
-                A reliable staffing partner for modern enterprises.
-              </h2>
-              <p className="mt-6 text-slate-600 leading-relaxed text-lg">
-                We help businesses reduce hiring time, access specialized
-                technology talent, and build scalable teams for critical
-                digital transformation initiatives.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {[
-                [Clock, "Fast Hiring", "Quick access to shortlisted professionals."],
-                [ShieldCheck, "Vetted Talent", "Skilled professionals aligned to your needs."],
-                [Globe2, "Global Delivery", "Australia and India staffing support."],
-                [CheckCircle2, "Enterprise Fit", "Built for regulated business environments."],
-              ].map(([Icon, title, text]) => (
-                <div key={title} className="rounded-3xl bg-white p-7 border border-slate-200 shadow-sm">
-                  <Icon className="text-orange-700 mb-5" size={34} />
-                  <h3 className="text-xl font-bold">{title}</h3>
-                  <p className="mt-3 text-slate-600">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Preview */}
-      <section id="services" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div>
-              <p className="text-orange-700 font-semibold uppercase tracking-wide text-sm">
-                Featured Services
-              </p>
-              <h2 className="mt-4 text-4xl lg:text-5xl font-bold">
-                Technology capabilities that support growth.
-              </h2>
-            </div>
-
-            <a href="/services" className="inline-flex items-center gap-2 text-orange-700 font-semibold">
-              View All Services <ArrowRight size={18} />
-            </a>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {services.map(({ icon: Icon, title, text }) => (
-              <div
-                key={title}
-                className="group rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition"
-              >
-                <div className="h-16 w-16 rounded-2xl bg-orange-100 flex items-center justify-center mb-6 group-hover:bg-orange-700 transition">
-                  <Icon className="text-orange-700 group-hover:text-white transition" size={30} />
-                </div>
-                <h3 className="text-xl font-bold">{title}</h3>
-                <p className="mt-4 text-slate-600">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-24 bg-gradient-to-br from-slate-950 to-[#1f130c] text-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-orange-400 font-semibold uppercase tracking-wide text-sm">
-              Getting Started
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+              Our Services
             </p>
-            <h2 className="mt-4 text-4xl lg:text-5xl font-bold">
-              Simple process. Faster hiring.
+
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+              Technology solutions for every stage of your digital journey.
             </h2>
           </div>
 
-          <div className="mt-16 grid md:grid-cols-4 gap-6">
-            {steps.map((step, index) => (
-              <div key={step} className="rounded-3xl bg-white/10 border border-white/10 p-7">
-                <div className="text-4xl font-bold text-orange-400">
-                  0{index + 1}
-                </div>
-                <h3 className="mt-6 text-xl font-semibold">{step}</h3>
+          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
+            {services.map(({ icon: Icon, title, text }) => (
+              <div
+                key={title}
+                className="bg-white p-8 hover:bg-slate-50 transition"
+              >
+                <Icon className="text-blue-600" size={36} />
+
+                <h3 className="mt-8 text-2xl font-semibold">{title}</h3>
+
+                <p className="mt-4 text-slate-600 leading-relaxed">{text}</p>
+
+                <a
+                  href="/services"
+                  className="mt-8 inline-flex items-center gap-2 text-blue-700 font-semibold"
+                >
+                  Learn more <ArrowRight size={16} />
+                </a>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Careers CTA */}
-      <section className="py-24 bg-orange-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="rounded-[2.5rem] bg-white border border-orange-100 p-10 lg:p-14 shadow-xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+      {/* SOLUTIONS */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="text-orange-700 font-semibold uppercase tracking-wide text-sm">
-                Careers
+              <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+                Featured Solutions
               </p>
-              <h2 className="mt-3 text-4xl font-bold">
-                Looking for your next tech opportunity?
+
+              <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+                We build platforms that solve real business problems.
               </h2>
-              <p className="mt-4 text-slate-600">
-                Explore open roles and submit your resume to Sicada Digital.
-              </p>
             </div>
 
-            <a
-              href="/careers"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-700 px-8 py-4 text-white font-semibold hover:bg-orange-800 transition"
-            >
-              View Careers <ArrowRight size={18} />
-            </a>
+            <div className="space-y-6">
+              {[
+                "Insurance claims and policy management systems",
+                "Healthcare clinic and patient management platforms",
+                "AI-powered customer service and internal assistants",
+                "Enterprise dashboards and business intelligence portals",
+              ].map((item) => (
+                <div key={item} className="flex gap-4">
+                  <CheckCircle2 className="text-blue-600 mt-1" size={22} />
+                  <p className="text-lg text-slate-700">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {industries.map(({ icon: Icon, title }) => (
+              <div
+                key={title}
+                className="border border-slate-200 p-8 bg-white hover:shadow-xl transition"
+              >
+                <Icon className="text-blue-600" size={38} />
+
+                <h3 className="mt-8 text-2xl font-semibold">{title}</h3>
+
+                <p className="mt-3 text-slate-600">
+                  Secure and scalable digital platforms designed for{" "}
+                  {title.toLowerCase()} businesses.
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section id="contact" className="py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold">
-            Need skilled technology professionals?
-          </h2>
-          <p className="mt-6 text-slate-600 text-lg">
-            Contact Sicada Digital to discuss staffing, consulting, or project-based support.
-          </p>
+      {/* WHY */}
+      <section className="py-24 bg-slate-950 text-white">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="text-sm font-semibold text-blue-400 uppercase tracking-wide">
+              Why Sicada Digital
+            </p>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="mailto:contact@sicadadigital.com"
-              className="rounded-2xl bg-orange-700 px-8 py-4 text-white font-semibold hover:bg-orange-800 transition"
-            >
-              contact@sicadadigital.com
-            </a>
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+              A software partner focused on clarity, quality and long-term
+              value.
+            </h2>
 
-            <a
-              href="/services"
-              className="rounded-2xl border border-slate-300 px-8 py-4 font-semibold hover:border-orange-700 hover:text-orange-700 transition"
-            >
-              Explore Services
-            </a>
+            <p className="mt-6 text-slate-300 text-lg leading-relaxed">
+              We combine modern engineering, cloud expertise, security-first
+              development and clear communication to help businesses launch
+              reliable digital products.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-px bg-white/10 border border-white/10">
+            {[
+              "Enterprise Focus",
+              "Modern Tech Stack",
+              "Security First",
+              "Agile Delivery",
+              "Transparent Process",
+              "Long-Term Support",
+            ].map((item) => (
+              <div key={item} className="bg-slate-950 p-7">
+                <CheckCircle2 className="text-blue-400" size={28} />
+
+                <h3 className="mt-5 text-xl font-semibold">{item}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TECHNOLOGIES */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+              Technologies
+            </p>
+
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+              Built with modern, reliable and scalable technologies.
+            </h2>
+          </div>
+
+          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-px bg-slate-200 border border-slate-200">
+            {technologies.map((tech) => (
+              <div
+                key={tech}
+                className="bg-white p-6 text-center font-semibold hover:bg-slate-50 transition"
+              >
+                {tech}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-slate-50 py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="bg-white border border-slate-200 p-10 lg:p-16 grid lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-semibold tracking-tight">
+                Ready to build your next software platform?
+              </h2>
+
+              <p className="mt-5 text-lg text-slate-600">
+                Talk to Sicada Digital about your software, cloud, AI or digital
+                transformation requirements.
+              </p>
+            </div>
+
+            <div className="lg:text-right">
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold transition"
+              >
+                Start a conversation <ArrowRight size={18} />
+              </a>
+            </div>
           </div>
         </div>
       </section>

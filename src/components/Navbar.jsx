@@ -5,92 +5,71 @@ import logo from "../assets/logo.png";
 function Navbar() {
   const [open, setOpen] = useState(false);
 
+  const links = [
+    // { name: "Solutions", href: "/solutions" },
+    { name: "Industries", href: "/industries" },
+    { name: "Services", href: "/services" },
+    // { name: "Case Studies", href: "/case-studies" },
+    { name: "About", href: "/about" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/contact" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <a href="/" className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="Sicada Digital"
-            className="h-12 w-auto"
-          />
+          <img src={logo} alt="Sicada Digital" className="h-11 w-auto" />
         </a>
 
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/services" className="hover:text-orange-700 transition">
-            Services
-          </a>
-          <a href="/careers" className="hover:text-orange-700 transition">
-            Careers
-          </a>
-          <a href="/about" className="hover:text-orange-700 transition">
-            About
-          </a>
-          <a href="/contact" className="hover:text-orange-700 transition">
-            Contact
-          </a>
+        <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-700">
+          {links.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="hover:text-blue-700 transition"
+            >
+              {link.name}
+            </a>
+          ))}
         </nav>
 
         <a
-          href="/admin"
-          className="hidden md:inline-block bg-orange-700 hover:bg-orange-800 text-white px-5 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
+          href="/contact"
+          className="hidden lg:inline-flex bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 text-sm font-semibold transition"
         >
-          Admin
+          Book Consultation
         </a>
 
-        {/* Mobile Burger */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden rounded-xl border border-slate-300 p-2 text-slate-900"
+          className="lg:hidden border border-slate-300 p-2 text-slate-900"
           aria-label="Toggle menu"
         >
-          {open ? <X size={26} /> : <Menu size={26} />}
+          {open ? <X size={25} /> : <Menu size={25} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-6 py-5 shadow-lg">
-          <nav className="flex flex-col gap-5 text-base font-medium">
-            <a
-              href="/services"
-              onClick={() => setOpen(false)}
-              className="hover:text-orange-700 transition"
-            >
-              Services
-            </a>
-
-            <a
-              href="/careers"
-              onClick={() => setOpen(false)}
-              className="hover:text-orange-700 transition"
-            >
-              Careers
-            </a>
-
-            <a
-              href="/about"
-              onClick={() => setOpen(false)}
-              className="hover:text-orange-700 transition"
-            >
-              About
-            </a>
+        <div className="lg:hidden bg-white border-t border-slate-200 px-6 py-6 shadow-lg">
+          <nav className="flex flex-col gap-5 text-base font-medium text-slate-700">
+            {links.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="hover:text-blue-700 transition"
+              >
+                {link.name}
+              </a>
+            ))}
 
             <a
               href="/contact"
               onClick={() => setOpen(false)}
-              className="hover:text-orange-700 transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 text-center font-semibold transition"
             >
-              Contact
-            </a>
-
-            <a
-              href="/admin"
-              onClick={() => setOpen(false)}
-              className="bg-orange-700 hover:bg-orange-800 text-white px-5 py-3 rounded-xl text-center font-semibold transition shadow-sm"
-            >
-              Admin 
+              Book Consultation
             </a>
           </nav>
         </div>

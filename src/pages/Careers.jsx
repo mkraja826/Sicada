@@ -1,12 +1,24 @@
 import { useState } from "react";
-import { Briefcase, GraduationCap, Globe2, Users } from "lucide-react";
+import {
+  ArrowRight,
+  Briefcase,
+  Code2,
+  Globe2,
+  GraduationCap,
+  HeartHandshake,
+  Laptop,
+  Lightbulb,
+} from "lucide-react";
 
 export default function Careers() {
   const jobs = [
-    "React Developer",
-    "QA Automation Engineer",
-    "DevOps Engineer",
-    "Business Analyst",
+    "Software Developer",
+    "Frontend Engineer",
+    "Backend Engineer",
+    "Cloud Engineer",
+    "Cybersecurity Analyst",
+    "Data Engineer",
+    "AI Engineer",
     "General Application",
   ];
 
@@ -29,105 +41,95 @@ export default function Careers() {
     });
   }
 
- async function handleSubmit(e) {
-  e.preventDefault();
-  setLoading(true);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    console.log("Sending application:", formData);
+    try {
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const res = await fetch("/api/applications", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+      const text = await res.text();
 
-    const text = await res.text();
+      if (!res.ok) {
+        throw new Error(text || "Submission failed");
+      }
 
-    console.log("API status:", res.status);
-    console.log("API response:", text);
+      alert("Application submitted successfully!");
 
-    if (!res.ok) {
-      throw new Error(text || "Submission failed");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        position: "",
+        linkedin: "",
+        resumeLink: "",
+        message: "",
+      });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
-
-    alert("Application submitted successfully!");
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      position: "",
-      linkedin: "",
-      resumeLink: "",
-      message: "",
-    });
-  } catch (error) {
-    console.error("Application submit error:", error);
-    alert(error.message);
-  } finally {
-    setLoading(false);
   }
-}
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <section className="bg-gradient-to-br from-orange-50 via-white to-orange-100 py-28">
+      {/* HERO */}
+      <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <p className="inline-flex rounded-full bg-orange-100 px-5 py-2 text-sm font-semibold text-orange-700 mb-6">
-              Careers at Sicada Digital
+            <p className="text-blue-700 font-semibold uppercase tracking-wide">
+              Careers
             </p>
 
-            <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-              Build Your Career With Enterprise Technology Teams
+            <h1 className="mt-5 text-5xl lg:text-7xl font-semibold tracking-tight leading-tight">
+              Join a team building modern digital solutions.
             </h1>
 
-            <p className="mt-6 text-lg text-slate-600 leading-relaxed max-w-xl">
-              Join Sicada Digital and work with technology teams supporting
-              insurance, enterprise, cloud, QA, DevOps, data, and software
-              engineering projects.
+            <p className="mt-8 text-xl text-slate-600 leading-relaxed">
+              Work on meaningful software products, cloud platforms, AI
+              solutions and enterprise applications for real businesses.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="#openings"
-                className="bg-orange-700 hover:bg-orange-800 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg transition"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold transition"
               >
-                View Open Roles
+                View open roles <ArrowRight size={18} />
               </a>
 
               <a
                 href="#apply"
-                className="border border-slate-300 hover:border-orange-700 hover:text-orange-700 px-8 py-4 rounded-2xl font-semibold transition"
+                className="inline-flex items-center gap-2 border border-slate-300 hover:border-slate-900 px-8 py-4 font-semibold transition"
               >
-                Submit Resume Link
+                Submit resume
               </a>
             </div>
           </div>
 
-          <div className="rounded-[2.5rem] bg-slate-950 p-8 text-white shadow-2xl">
-            <h3 className="text-3xl font-bold mb-8">
-              Why Join Sicada Digital?
+          <div className="bg-slate-950 text-white p-10 lg:p-12">
+            <Code2 className="text-blue-400" size={48} />
+
+            <h3 className="mt-8 text-3xl font-semibold">
+              Build, learn and grow with modern technology.
             </h3>
 
-            <div className="space-y-6">
+            <div className="mt-10 grid sm:grid-cols-2 gap-px bg-white/10 border border-white/10">
               {[
-                [Globe2, "Global Opportunities", "Work with Australia and India-based enterprise teams."],
-                [Users, "Professional Growth", "Build your skills through real-world technology projects."],
-                [GraduationCap, "Student Friendly", "Opportunities for freshers, interns and early-career talent."],
-              ].map(([Icon, title, text]) => (
-                <div key={title} className="flex gap-5 rounded-3xl bg-white/10 border border-white/10 p-6">
-                  <div className="h-14 w-14 rounded-2xl bg-orange-600 flex items-center justify-center">
-                    <Icon size={28} />
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl font-semibold">{title}</h4>
-                    <p className="mt-2 text-slate-300">{text}</p>
-                  </div>
+                "Software Products",
+                "Cloud Platforms",
+                "AI Solutions",
+                "Enterprise Apps",
+              ].map((item) => (
+                <div key={item} className="bg-slate-950 p-5">
+                  <p className="font-semibold">{item}</p>
                 </div>
               ))}
             </div>
@@ -135,35 +137,82 @@ export default function Careers() {
         </div>
       </section>
 
-      <section id="openings" className="py-24 bg-slate-50">
+      {/* CULTURE */}
+      <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <p className="text-orange-700 font-semibold uppercase tracking-wide text-sm">
-              Current Openings
+          <div className="max-w-3xl">
+            <p className="text-blue-700 font-semibold uppercase tracking-wide">
+              Our Culture
             </p>
 
-            <h2 className="mt-4 text-4xl lg:text-5xl font-bold">
-              Explore Career Opportunities
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+              A place for people who like building useful technology.
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {jobs.slice(0, 4).map((job) => (
+          <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
+            {[
+              {
+                icon: Laptop,
+                title: "Modern Tech Stack",
+                text: "Work with modern web, cloud, data and AI technologies.",
+              },
+              {
+                icon: Lightbulb,
+                title: "Innovation Focus",
+                text: "Contribute to practical solutions that solve real problems.",
+              },
+              {
+                icon: GraduationCap,
+                title: "Learning Mindset",
+                text: "Grow your skills through projects, mentorship and self-learning.",
+              },
+              {
+                icon: HeartHandshake,
+                title: "Team Collaboration",
+                text: "Work with supportive teams focused on quality delivery.",
+              },
+            ].map(({ icon: Icon, title, text }) => (
+              <div key={title} className="bg-white p-8">
+                <Icon className="text-blue-600" size={38} />
+
+                <h3 className="mt-8 text-2xl font-semibold">{title}</h3>
+
+                <p className="mt-4 text-slate-600 leading-relaxed">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OPEN ROLES */}
+      <section id="openings" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <p className="text-blue-700 font-semibold uppercase tracking-wide">
+              Open Roles
+            </p>
+
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
+              Explore opportunities at Sicada Digital.
+            </h2>
+          </div>
+
+          <div className="mt-16 grid md:grid-cols-2 gap-6">
+            {jobs.slice(0, 6).map((job) => (
               <div
                 key={job}
-                className="bg-white rounded-[2rem] border border-slate-200 p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+                className="border border-slate-200 p-8 hover:shadow-xl transition"
               >
                 <div className="flex items-start gap-5">
-                  <div className="h-14 w-14 rounded-2xl bg-orange-100 flex items-center justify-center">
-                    <Briefcase className="text-orange-700" size={28} />
-                  </div>
+                  <Briefcase className="text-blue-600" size={36} />
 
                   <div>
-                    <p className="text-sm font-semibold text-orange-700">
+                    <p className="text-sm font-semibold text-blue-700">
                       Technology
                     </p>
 
-                    <h3 className="text-2xl font-bold mt-1">{job}</h3>
+                    <h3 className="mt-1 text-2xl font-semibold">{job}</h3>
 
                     <p className="mt-3 text-slate-500">
                       Remote / Hybrid • Full Time
@@ -179,9 +228,9 @@ export default function Careers() {
                       position: job,
                     })
                   }
-                  className="mt-8 inline-block bg-orange-700 hover:bg-orange-800 text-white px-6 py-3 rounded-xl font-semibold transition"
+                  className="mt-8 inline-flex items-center gap-2 text-blue-700 font-semibold"
                 >
-                  Apply Now
+                  Apply now <ArrowRight size={18} />
                 </a>
               </div>
             ))}
@@ -189,21 +238,22 @@ export default function Careers() {
         </div>
       </section>
 
-      <section id="apply" className="py-24 bg-white">
+      {/* APPLY */}
+      <section id="apply" className="py-24 bg-slate-50">
         <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-white border border-slate-200 rounded-[2rem] p-10 shadow-xl">
-            <div className="text-center mb-10">
-              <p className="text-orange-700 font-semibold uppercase tracking-wide text-sm">
+          <div className="bg-white border border-slate-200 p-10 lg:p-12">
+            <div className="mb-10">
+              <p className="text-blue-700 font-semibold uppercase tracking-wide">
                 Apply Online
               </p>
 
-              <h2 className="mt-4 text-4xl font-bold">
-                Submit Your Application
+              <h2 className="mt-4 text-4xl font-semibold">
+                Submit your application.
               </h2>
 
               <p className="mt-4 text-slate-600">
-                Upload your resume to Google Drive or Dropbox, make it shareable,
-                and paste the resume link below.
+                Upload your resume to Google Drive or Dropbox, make it
+                shareable, and paste the resume link below.
               </p>
             </div>
 
@@ -214,7 +264,7 @@ export default function Careers() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Full Name"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
                 required
               />
 
@@ -224,7 +274,7 @@ export default function Careers() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
                 required
               />
 
@@ -234,7 +284,7 @@ export default function Careers() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
                 required
               />
 
@@ -242,7 +292,7 @@ export default function Careers() {
                 name="position"
                 value={formData.position}
                 onChange={handleChange}
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
                 required
               >
                 <option value="">Select Position</option>
@@ -259,7 +309,7 @@ export default function Careers() {
                 value={formData.linkedin}
                 onChange={handleChange}
                 placeholder="LinkedIn Profile URL"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
               />
 
               <input
@@ -268,7 +318,7 @@ export default function Careers() {
                 value={formData.resumeLink}
                 onChange={handleChange}
                 placeholder="Resume Link / Google Drive Link"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
                 required
               />
 
@@ -278,17 +328,41 @@ export default function Careers() {
                 onChange={handleChange}
                 placeholder="Message / Experience"
                 rows="5"
-                className="w-full border border-slate-300 rounded-xl px-4 py-4"
+                className="w-full border border-slate-300 px-4 py-4"
               />
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-700 text-white py-4 rounded-xl font-semibold hover:bg-orange-800 transition disabled:opacity-60"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 font-semibold transition disabled:opacity-60"
               >
                 {loading ? "Submitting..." : "Submit Application"}
               </button>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="bg-slate-950 text-white p-12 lg:p-16 text-center">
+            <Globe2 className="mx-auto text-blue-400" size={48} />
+
+            <h2 className="mt-8 text-4xl lg:text-5xl font-semibold">
+              Build your future with Sicada Digital.
+            </h2>
+
+            <p className="mt-6 text-xl text-slate-300">
+              Join a team focused on software, cloud, AI and digital innovation.
+            </p>
+
+            <a
+              href="#apply"
+              className="inline-flex items-center gap-2 mt-10 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold transition"
+            >
+              Apply now <ArrowRight size={18} />
+            </a>
           </div>
         </div>
       </section>
