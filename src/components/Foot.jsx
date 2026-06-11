@@ -116,8 +116,8 @@ function Foot() {
               <li className="flex gap-3">
                 <Mail className="text-blue-400 mt-1" size={18} />
                 <div>
-                  <p>contact@sicadadigital.com</p>
-                  <p>careers@sicadadigital.com</p>
+                  <p>Hr@sicadadigital.com</p>
+                  <p>Hr@sicadadigital.com</p>
                 </div>
               </li>
 

@@ -109,7 +109,7 @@ ${formData.message}
               </a>
 
               <a
-                href="mailto:contact@sicadadigital.com"
+                href="mailto:Hr@sicadadigital.com"
                 className="inline-flex items-center gap-2 border border-slate-300 hover:border-slate-900 px-8 py-4 font-semibold transition"
               >
                 Email us
@@ -154,12 +154,12 @@ ${formData.message}
               {
                 icon: Mail,
                 title: "Email",
-                text: "contact@sicadadigital.com",
+                text: "Hr@sicadadigital.com",
               },
               {
                 icon: Phone,
                 title: "Phone",
-                text: "+61 400 000 000",
+                text: "+916301469938",
               },
               {
                 icon: MapPin,
@@ -329,10 +329,10 @@ ${formData.message}
           </p>
 
           <a
-            href="mailto:contact@sicadadigital.com"
+            href="mailto:Hr@sicadadigital.com"
             className="inline-flex mt-10 bg-blue-600 hover:bg-blue-700 px-8 py-4 font-semibold transition"
           >
-            contact@sicadadigital.com
+            Hr@sicadadigital.com
           </a>
         </div>
       </section>
