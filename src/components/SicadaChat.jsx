@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
-import { ArrowRight, ArrowUp, Bot, MessageSquareText, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, ArrowUp, Bot, CheckCircle2, MessageSquareText, ShieldCheck, Sparkles, X } from "lucide-react";
 
 const QUICK_PROMPTS = [
-  "How can AI improve our CRM?",
-  "Can Sicada build an AI ERP?",
-  "How do you use LLMs securely?",
-  "What AI cybersecurity solutions do you build?",
+  "Improve our CRM with AI",
+  "Build an AI-enabled ERP",
+  "Secure enterprise LLM adoption",
+  "Explore AI cybersecurity",
 ];
 
 function getLocalAnswer(message) {
@@ -36,10 +36,15 @@ export default function SicadaChat() {
   const [leadStatus, setLeadStatus] = useState("idle");
   const [lead, setLead] = useState({ name: "", email: "", company: "", project: "" });
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Hello. I’m Sicada AI. Tell me what you’re trying to build, automate or improve with AI, ML or LLMs." },
+    { role: "assistant", text: "Welcome to Sicada AI. Describe your business challenge or the AI capability you want to introduce, and I’ll help identify the right Sicada approach." },
   ]);
+  const scrollRef = useRef(null);
 
-  const suggestions = useMemo(() => QUICK_PROMPTS.slice(0, 3), []);
+  const suggestions = useMemo(() => QUICK_PROMPTS, []);
+
+  useEffect(() => {
+    if (open) requestAnimationFrame(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }));
+  }, [open, messages, loading, showLeadForm]);
 
   async function submitMessage(value) {
     const message = value.trim();
@@ -50,6 +55,7 @@ export default function SicadaChat() {
     setInput("");
     setLoading(true);
     setProviderStatus(null);
+    setNextStep(null);
 
     try {
       const response = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message, history }) });
@@ -80,7 +86,7 @@ export default function SicadaChat() {
       if (!response.ok) throw new Error("Lead storage unavailable");
       setLeadStatus("success");
       setShowLeadForm(false);
-      setMessages((current) => [...current, { role: "assistant", text: "Thanks. Your project details have been shared with the Sicada team." }]);
+      setMessages((current) => [...current, { role: "assistant", text: "Thank you. Your project details have been shared with the Sicada team." }]);
     } catch { setLeadStatus("fallback"); }
   }
 
@@ -89,76 +95,99 @@ export default function SicadaChat() {
   return (
     <>
       {open && (
-        <section className="fixed z-[70] bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[390px] max-h-[72vh] bg-white border border-slate-300 shadow-2xl flex flex-col" aria-label="Sicada AI assistant">
-          <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-slate-200 bg-slate-950 text-white">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 border border-blue-400/40 bg-blue-500/10 flex items-center justify-center"><Bot size={20} className="text-blue-400" /></div>
-              <div>
-                <p className="font-semibold">Ask Sicada AI</p>
-                <p className="text-xs text-slate-400 mt-0.5">AI solutions assistant</p>
+        <section className="fixed z-[70] inset-x-3 bottom-20 sm:inset-auto sm:right-6 sm:bottom-24 sm:w-[430px] h-[min(680px,calc(100dvh-7rem))] bg-white border border-slate-200 shadow-[0_24px_70px_rgba(15,23,42,0.22)] rounded-2xl overflow-hidden flex flex-col" aria-label="Sicada AI assistant">
+          <header className="relative px-5 py-4 bg-slate-950 text-white border-b border-white/10">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/80 to-transparent" />
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="relative w-10 h-10 rounded-xl border border-blue-400/25 bg-blue-500/10 flex items-center justify-center shrink-0">
+                  <Sparkles size={19} className="text-blue-400" />
+                  <span className="absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-950" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2"><p className="font-semibold text-[15px] tracking-[-0.01em]">Sicada AI</p><span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-300 border border-blue-400/20 bg-blue-400/10 px-1.5 py-0.5 rounded">Business</span></div>
+                  <p className="text-xs text-slate-400 mt-0.5 truncate">Enterprise AI solutions assistant</p>
+                </div>
               </div>
+              <button type="button" onClick={() => setOpen(false)} className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors" aria-label="Close Sicada AI"><X size={18} /></button>
             </div>
-            <button type="button" onClick={() => setOpen(false)} className="text-slate-300 hover:text-white p-1" aria-label="Close Sicada AI"><X size={20} /></button>
+          </header>
+
+          <div className="px-5 py-2.5 bg-white border-b border-slate-200 flex items-center justify-between gap-3 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5"><ShieldCheck size={13} className="text-blue-600" /> Sicada & business requirements only</span>
+            <span className="hidden sm:inline">No code generation</span>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 sm:px-5 py-5 space-y-5 bg-slate-50/70 overscroll-contain">
             {messages.map((message, index) => (
-              <div key={`${message.role}-${index}`} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
-                <div className={message.role === "user" ? "max-w-[86%] bg-blue-600 text-white px-4 py-3 text-sm leading-relaxed" : "max-w-[92%] bg-white border border-slate-200 text-slate-700 px-4 py-3 text-sm leading-relaxed"}>{message.text}</div>
+              <div key={`${message.role}-${index}`} className={message.role === "user" ? "flex justify-end" : "flex items-start gap-2.5 justify-start"}>
+                {message.role === "assistant" && <div className="mt-0.5 w-7 h-7 rounded-lg bg-slate-950 text-blue-400 flex items-center justify-center shrink-0"><Bot size={14} /></div>}
+                <div className={message.role === "user" ? "max-w-[84%] rounded-2xl rounded-br-md bg-blue-600 text-white px-4 py-3 text-[13px] sm:text-sm leading-6 shadow-sm" : "max-w-[86%] rounded-2xl rounded-tl-md bg-white border border-slate-200 text-slate-700 px-4 py-3 text-[13px] sm:text-sm leading-6 shadow-sm"}>{message.text}</div>
               </div>
             ))}
 
-            {loading && <div className="flex justify-start"><div className="bg-white border border-slate-200 text-slate-500 px-4 py-3 text-sm">Reviewing your question…</div></div>}
+            {loading && (
+              <div className="flex items-start gap-2.5">
+                <div className="mt-0.5 w-7 h-7 rounded-lg bg-slate-950 text-blue-400 flex items-center justify-center shrink-0"><Bot size={14} /></div>
+                <div className="rounded-2xl rounded-tl-md bg-white border border-slate-200 px-4 py-3 shadow-sm flex items-center gap-1.5" aria-label="Sicada AI is responding">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-pulse" /><span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-pulse [animation-delay:150ms]" /><span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-pulse [animation-delay:300ms]" />
+                </div>
+              </div>
+            )}
 
             {statusLabel && !loading && messages.length > 1 && (
-              <div className="flex justify-start">
-                <span className={providerStatus === "live" ? "text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1" : "text-[11px] font-semibold text-slate-500 bg-white border border-slate-200 px-2 py-1"}>{statusLabel}</span>
+              <div className="pl-9 flex items-center gap-1.5 text-[10px] font-medium text-slate-400">
+                {providerStatus === "live" && <CheckCircle2 size={11} className="text-emerald-600" />}{statusLabel}
               </div>
             )}
 
             {messages.length === 1 && (
-              <div className="pt-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-3">Common questions</p>
-                <div className="space-y-2">{suggestions.map((prompt) => <button key={prompt} type="button" onClick={() => submitMessage(prompt)} className="w-full text-left bg-white border border-slate-200 hover:border-blue-500 px-4 py-3 text-sm text-slate-700 transition-colors">{prompt}</button>)}</div>
+              <div className="pl-0 sm:pl-9 pt-1">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400 mb-2.5">Explore a capability</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {suggestions.map((prompt) => <button key={prompt} type="button" onClick={() => submitMessage(prompt)} className="group w-full rounded-xl text-left bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50/40 px-3.5 py-3 text-[13px] font-medium text-slate-700 transition-colors flex items-center justify-between gap-3"><span>{prompt}</span><ArrowRight size={14} className="text-slate-300 group-hover:text-blue-600 transition-colors shrink-0" /></button>)}
+                </div>
               </div>
             )}
 
             {nextStep && !loading && !showLeadForm && (
-              <div className="border border-blue-200 bg-blue-50 p-4">
-                <p className="text-sm text-slate-700 leading-relaxed">{nextStep.message}</p>
-                <div className="mt-3 flex flex-wrap gap-4">
-                  {nextStep.href === "/contact" && <button type="button" onClick={() => setShowLeadForm(true)} className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700">Share project details <ArrowRight size={16} /></button>}
-                  <a href={nextStep.href} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">{nextStep.label} <ArrowRight size={16} /></a>
+              <div className="ml-0 sm:ml-9 rounded-xl border border-blue-200 bg-blue-50/70 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-blue-700 mb-1.5">Recommended next step</p>
+                <p className="text-[13px] text-slate-700 leading-5">{nextStep.message}</p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+                  {nextStep.href === "/contact" && <button type="button" onClick={() => setShowLeadForm(true)} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-blue-700 hover:text-blue-800">Share project details <ArrowRight size={14} /></button>}
+                  <a href={nextStep.href} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-700 hover:text-slate-950">{nextStep.label} <ArrowRight size={14} /></a>
                 </div>
               </div>
             )}
 
             {showLeadForm && (
-              <form onSubmit={submitLead} className="bg-white border border-slate-300 p-4 space-y-3">
-                <div><p className="text-sm font-semibold text-slate-900">Share your project with Sicada</p><p className="text-xs text-slate-500 mt-1">These details are submitted only when you press Send to Sicada.</p></div>
-                <input value={lead.name} onChange={(e) => setLead({ ...lead, name: e.target.value })} required placeholder="Name" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
-                <input value={lead.email} onChange={(e) => setLead({ ...lead, email: e.target.value })} required type="email" placeholder="Work email" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
-                <input value={lead.company} onChange={(e) => setLead({ ...lead, company: e.target.value })} placeholder="Company (optional)" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
-                <textarea value={lead.project} onChange={(e) => setLead({ ...lead, project: e.target.value })} required rows="3" placeholder="Briefly describe what you want to build or improve" className="w-full border border-slate-300 px-3 py-2.5 text-sm resize-none" />
-                <div className="flex gap-3 items-center"><button type="submit" disabled={leadStatus === "submitting"} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2.5 text-sm font-semibold">{leadStatus === "submitting" ? "Sending…" : "Send to Sicada"}</button><button type="button" onClick={() => setShowLeadForm(false)} className="text-sm font-semibold text-slate-600">Cancel</button></div>
+              <form onSubmit={submitLead} className="ml-0 sm:ml-9 rounded-xl bg-white border border-slate-200 shadow-sm p-4 space-y-3">
+                <div><p className="text-sm font-semibold text-slate-900">Discuss your project</p><p className="text-xs text-slate-500 mt-1 leading-5">Share the essentials and Sicada can continue the conversation with your team.</p></div>
+                <input value={lead.name} onChange={(e) => setLead({ ...lead, name: e.target.value })} required placeholder="Name" className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-blue-600" />
+                <input value={lead.email} onChange={(e) => setLead({ ...lead, email: e.target.value })} required type="email" placeholder="Work email" className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-blue-600" />
+                <input value={lead.company} onChange={(e) => setLead({ ...lead, company: e.target.value })} placeholder="Company (optional)" className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-blue-600" />
+                <textarea value={lead.project} onChange={(e) => setLead({ ...lead, project: e.target.value })} required rows="3" placeholder="What would you like to build or improve?" className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm resize-none outline-none focus:border-blue-600" />
+                <div className="flex gap-3 items-center"><button type="submit" disabled={leadStatus === "submitting"} className="rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2.5 text-sm font-semibold transition-colors">{leadStatus === "submitting" ? "Sending…" : "Send to Sicada"}</button><button type="button" onClick={() => setShowLeadForm(false)} className="text-sm font-semibold text-slate-500 hover:text-slate-800">Cancel</button></div>
               </form>
             )}
 
-            {leadStatus === "fallback" && <div className="border border-amber-200 bg-amber-50 p-4"><p className="text-sm text-slate-700">The direct enquiry service is temporarily unavailable. Your details were not stored.</p><a href="/contact" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">Continue on Contact page <ArrowRight size={16} /></a></div>}
+            {leadStatus === "fallback" && <div className="ml-0 sm:ml-9 rounded-xl border border-amber-200 bg-amber-50 p-4"><p className="text-sm text-slate-700">Direct enquiry is temporarily unavailable. Your details were not stored.</p><a href="/contact" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">Continue on Contact page <ArrowRight size={15} /></a></div>}
           </div>
 
-          <form onSubmit={handleSubmit} className="p-4 border-t border-slate-200 bg-white">
-            <div className="flex items-end gap-2 border border-slate-300 focus-within:border-blue-600 bg-white p-2">
-              <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitMessage(input); } }} rows="2" placeholder="Ask about AI, CRM, ERP, LLMs or cybersecurity..." className="flex-1 resize-none px-2 py-1 text-sm outline-none min-h-[44px] max-h-28" aria-label="Message Sicada AI" disabled={loading} />
-              <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white w-10 h-10 flex items-center justify-center shrink-0" aria-label="Send message"><ArrowUp size={18} /></button>
+          <form onSubmit={handleSubmit} className="px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-slate-200 bg-white">
+            <div className="rounded-xl flex items-end gap-2 border border-slate-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 bg-white px-3 py-2 transition-shadow">
+              <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitMessage(input); } }} rows="1" placeholder="Describe your business or AI requirement…" className="flex-1 resize-none py-2 text-sm leading-5 outline-none min-h-[36px] max-h-24 placeholder:text-slate-400" aria-label="Message Sicada AI" disabled={loading} />
+              <button type="submit" disabled={loading || !input.trim()} className="rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white w-9 h-9 flex items-center justify-center shrink-0 transition-colors" aria-label="Send message"><ArrowUp size={17} /></button>
             </div>
-            <p className="mt-2 text-[11px] text-slate-400">Chat messages are used only for this session unless you explicitly submit project details.</p>
+            <div className="mt-2 px-1 flex items-center justify-between gap-3 text-[10px] text-slate-400"><span>Enter to send · Shift + Enter for a new line</span><span className="hidden sm:inline">Session only</span></div>
           </form>
         </section>
       )}
 
-      <button type="button" onClick={() => setOpen((value) => !value)} className="fixed z-[70] bottom-5 right-4 sm:right-6 bg-slate-950 hover:bg-slate-900 text-white px-4 h-12 shadow-lg flex items-center gap-3 border border-slate-800" aria-label={open ? "Close Sicada AI" : "Open Sicada AI"} aria-expanded={open}>
-        <MessageSquareText size={19} className="text-blue-400" /><span className="text-sm font-semibold">Ask Sicada AI</span>
+      <button type="button" onClick={() => setOpen((value) => !value)} className="fixed z-[70] bottom-5 right-4 sm:right-6 group rounded-full bg-slate-950 hover:bg-slate-900 text-white h-13 min-h-[52px] px-4 shadow-[0_12px_35px_rgba(15,23,42,0.28)] flex items-center gap-3 border border-slate-800 transition-all hover:-translate-y-0.5" aria-label={open ? "Close Sicada AI" : "Open Sicada AI"} aria-expanded={open}>
+        <span className="relative w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center"><MessageSquareText size={17} className="text-blue-400" /><span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border-2 border-slate-950" /></span>
+        <span className="text-sm font-semibold pr-1">Ask Sicada AI</span>
       </button>
     </>
   );
