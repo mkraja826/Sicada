@@ -10,25 +10,25 @@ import AdminLogin from "./pages/AdminLogin";
 import Foot from "./components/Foot";
 import Navbar from "./components/Navbar";
 import Industries from "./pages/Industries";
-// import Case from "./pages/Case";
+import CaseStudies from "./pages/CaseStudies";
+import Insights from "./pages/Insights";
 
 function App() {
   return (
     <BrowserRouter>
-    <Navbar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/industries" element={<Industries />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/insights" element={<Insights />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
-                {/* <Route path="/case" element={<Case />} /> */}
-
         <Route path="/adminlogin" element={<AdminLogin />} />
-        <Route path="/industries" element={<Industries />} />
       </Routes>
-
       <Foot />
     </BrowserRouter>
   );

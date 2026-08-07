@@ -1,25 +1,36 @@
 import { useState } from "react";
 import {
   ArrowRight,
+  BrainCircuit,
   Briefcase,
+  CheckCircle2,
   Code2,
-  Globe2,
-  GraduationCap,
-  HeartHandshake,
-  Laptop,
-  Lightbulb,
+  Database,
+  Network,
+  ShieldCheck,
+  Users,
 } from "lucide-react";
 
 export default function Careers() {
   const jobs = [
-    "Software Developer",
-    "Frontend Engineer",
-    "Backend Engineer",
-    "Cloud Engineer",
-    "Cybersecurity Analyst",
-    "Data Engineer",
     "AI Engineer",
+    "Machine Learning Engineer",
+    "LLM Engineer",
+    "Full-Stack Engineer",
+    "Data Engineer",
+    "Cloud Engineer",
+    "Cybersecurity Engineer",
+    "Software Engineer",
     "General Application",
+  ];
+
+  const featuredRoles = [
+    [BrainCircuit, "AI Engineer", "Design and engineer AI-native applications, agents, retrieval systems and production AI workflows."],
+    [Network, "Machine Learning Engineer", "Build, evaluate and operationalize predictive models and machine-learning systems."],
+    [Code2, "Full-Stack Engineer", "Create high-quality software experiences around AI, enterprise workflows, APIs and data."],
+    [Database, "Data Engineer", "Build the governed data foundations, pipelines and retrieval layers that dependable AI requires."],
+    [ShieldCheck, "Cybersecurity Engineer", "Engineer secure systems and intelligent capabilities for modern security operations."],
+    [Briefcase, "Cloud Engineer", "Design reliable cloud infrastructure, deployment pipelines, observability and AI workloads."],
   ];
 
   const [formData, setFormData] = useState({
@@ -31,46 +42,25 @@ export default function Careers() {
     resumeLink: "",
     message: "",
   });
-
   const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-
     try {
       const res = await fetch("/api/applications", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const text = await res.text();
-
-      if (!res.ok) {
-        throw new Error(text || "Submission failed");
-      }
-
+      if (!res.ok) throw new Error(text || "Submission failed");
       alert("Application submitted successfully!");
-
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        position: "",
-        linkedin: "",
-        resumeLink: "",
-        message: "",
-      });
+      setFormData({ name: "", email: "", phone: "", position: "", linkedin: "", resumeLink: "", message: "" });
     } catch (error) {
       alert(error.message);
     } finally {
@@ -79,57 +69,52 @@ export default function Careers() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      {/* HERO */}
-      <section className="py-24 lg:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <p className="text-blue-700 font-semibold uppercase tracking-wide">
-              Careers
-            </p>
-
-            <h1 className="mt-5 text-5xl lg:text-7xl font-semibold tracking-tight leading-tight">
-              Join a team building modern digital solutions.
+    <main className="min-h-screen bg-white text-slate-950">
+      <section className="border-b border-slate-200">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-12 gap-14 items-end">
+          <div className="lg:col-span-8">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">Careers at Sicada</p>
+            <h1 className="mt-6 text-5xl sm:text-6xl lg:text-[4.7rem] leading-[1.03] tracking-[-0.045em] font-semibold max-w-5xl">
+              Build the intelligence layer of tomorrow&apos;s software.
             </h1>
-
-            <p className="mt-8 text-xl text-slate-600 leading-relaxed">
-              Work on meaningful software products, cloud platforms, AI
-              solutions and enterprise applications for real businesses.
+            <p className="mt-7 text-xl lg:text-[1.3rem] leading-relaxed text-slate-600 max-w-3xl">
+              Work across AI, machine learning, LLMs, enterprise software, data, cloud and cybersecurity to turn emerging technology into dependable products.
             </p>
-
             <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#openings"
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold transition"
-              >
-                View open roles <ArrowRight size={18} />
-              </a>
-
-              <a
-                href="#apply"
-                className="inline-flex items-center gap-2 border border-slate-300 hover:border-slate-900 px-8 py-4 font-semibold transition"
-              >
-                Submit resume
-              </a>
+              <a href="#openings" className="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 font-semibold">Explore roles <ArrowRight size={18} /></a>
+              <a href="#apply" className="inline-flex items-center gap-3 border border-slate-400 hover:border-slate-950 px-7 py-4 font-semibold">Submit your profile</a>
             </div>
           </div>
+          <div className="lg:col-span-4 lg:border-l lg:border-slate-200 lg:pl-10">
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Work at the intersection of</p>
+            <div className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+              {["Artificial intelligence", "Enterprise software", "Machine learning", "Cybersecurity", "Cloud & data"].map((item) => (
+                <div key={item} className="py-4 font-medium">{item}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="bg-slate-950 text-white p-10 lg:p-12">
-            <Code2 className="text-blue-400" size={48} />
-
-            <h3 className="mt-8 text-3xl font-semibold">
-              Build, learn and grow with modern technology.
-            </h3>
-
-            <div className="mt-10 grid sm:grid-cols-2 gap-px bg-white/10 border border-white/10">
+      <section className="py-24 lg:py-32 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+          <div className="lg:col-span-5">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">Engineering culture</p>
+            <h2 className="mt-5 text-4xl lg:text-5xl font-semibold tracking-[-0.03em] leading-tight">Curiosity matters. Engineering discipline matters more.</h2>
+          </div>
+          <div className="lg:col-span-7">
+            <p className="text-xl text-slate-600 leading-relaxed">AI moves quickly. Our work requires people who enjoy learning while still caring deeply about fundamentals: users, data, architecture, security, testing and production reliability.</p>
+            <div className="mt-10 grid sm:grid-cols-2 border-t border-l border-slate-300">
               {[
-                "Software Products",
-                "Cloud Platforms",
-                "AI Solutions",
-                "Enterprise Apps",
-              ].map((item) => (
-                <div key={item} className="bg-slate-950 p-5">
-                  <p className="font-semibold">{item}</p>
+                ["Learn continuously", "Explore new models and techniques without chasing technology for its own sake."],
+                ["Build for production", "Turn experiments into software people can depend on."],
+                ["Think in systems", "Understand how models, data, interfaces, infrastructure and security connect."],
+                ["Work together", "Strong products come from clear thinking, critique and collaboration."],
+              ].map(([title, text]) => (
+                <div key={title} className="bg-white border-r border-b border-slate-300 p-7 min-h-[210px]">
+                  <CheckCircle2 className="text-blue-600" size={22} />
+                  <h3 className="mt-7 text-xl font-semibold">{title}</h3>
+                  <p className="mt-3 text-slate-600 leading-relaxed">{text}</p>
                 </div>
               ))}
             </div>
@@ -137,235 +122,81 @@ export default function Careers() {
         </div>
       </section>
 
-      {/* CULTURE */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <p className="text-blue-700 font-semibold uppercase tracking-wide">
-              Our Culture
-            </p>
-
-            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
-              A place for people who like building useful technology.
-            </h2>
-          </div>
-
-          <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
-            {[
-              {
-                icon: Laptop,
-                title: "Modern Tech Stack",
-                text: "Work with modern web, cloud, data and AI technologies.",
-              },
-              {
-                icon: Lightbulb,
-                title: "Innovation Focus",
-                text: "Contribute to practical solutions that solve real problems.",
-              },
-              {
-                icon: GraduationCap,
-                title: "Learning Mindset",
-                text: "Grow your skills through projects, mentorship and self-learning.",
-              },
-              {
-                icon: HeartHandshake,
-                title: "Team Collaboration",
-                text: "Work with supportive teams focused on quality delivery.",
-              },
-            ].map(({ icon: Icon, title, text }) => (
-              <div key={title} className="bg-white p-8">
-                <Icon className="text-blue-600" size={38} />
-
-                <h3 className="mt-8 text-2xl font-semibold">{title}</h3>
-
-                <p className="mt-4 text-slate-600 leading-relaxed">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* OPEN ROLES */}
-      <section id="openings" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <p className="text-blue-700 font-semibold uppercase tracking-wide">
-              Open Roles
-            </p>
-
-            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-tight">
-              Explore opportunities at Sicada Digital.
-            </h2>
-          </div>
-
-          <div className="mt-16 grid md:grid-cols-2 gap-6">
-            {jobs.slice(0, 6).map((job) => (
-              <div
-                key={job}
-                className="border border-slate-200 p-8 hover:shadow-xl transition"
-              >
-                <div className="flex items-start gap-5">
-                  <Briefcase className="text-blue-600" size={36} />
-
-                  <div>
-                    <p className="text-sm font-semibold text-blue-700">
-                      Technology
-                    </p>
-
-                    <h3 className="mt-1 text-2xl font-semibold">{job}</h3>
-
-                    <p className="mt-3 text-slate-500">
-                      Remote / Hybrid • Full Time
-                    </p>
-                  </div>
-                </div>
-
-                <a
-                  href="#apply"
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      position: job,
-                    })
-                  }
-                  className="mt-8 inline-flex items-center gap-2 text-blue-700 font-semibold"
-                >
-                  Apply now <ArrowRight size={18} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* APPLY */}
-      <section id="apply" className="py-24 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-white border border-slate-200 p-10 lg:p-12">
-            <div className="mb-10">
-              <p className="text-blue-700 font-semibold uppercase tracking-wide">
-                Apply Online
-              </p>
-
-              <h2 className="mt-4 text-4xl font-semibold">
-                Submit your application.
-              </h2>
-
-              <p className="mt-4 text-slate-600">
-                Upload your resume to Google Drive or Dropbox, make it
-                shareable, and paste the resume link below.
-              </p>
+      <section id="openings" className="py-24 lg:py-32 bg-white">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-12 gap-10 items-end">
+            <div className="lg:col-span-7">
+              <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">Opportunities</p>
+              <h2 className="mt-5 text-4xl lg:text-5xl font-semibold tracking-[-0.03em]">Engineering roles across the AI stack.</h2>
             </div>
+            <p className="lg:col-span-5 text-lg text-slate-600 leading-relaxed">Roles shown here represent the disciplines Sicada works across. Availability may vary; you can also submit a general application.</p>
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Full Name"
-                className="w-full border border-slate-300 px-4 py-4"
-                required
-              />
+          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 border-t border-l border-slate-200">
+            {featuredRoles.map(([Icon, title, text]) => (
+              <article key={title} className="border-r border-b border-slate-200 p-8 lg:p-9 min-h-[300px] flex flex-col">
+                <Icon className="text-blue-600" size={30} />
+                <h3 className="mt-9 text-2xl font-semibold">{title}</h3>
+                <p className="mt-4 text-slate-600 leading-relaxed flex-1">{text}</p>
+                <a href="#apply" onClick={() => setFormData({ ...formData, position: title })} className="mt-8 inline-flex items-center gap-2 text-blue-700 font-semibold">Apply for this discipline <ArrowRight size={18} /></a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email Address"
-                className="w-full border border-slate-300 px-4 py-4"
-                required
-              />
+      <section className="bg-slate-950 text-white py-24 lg:py-32">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+          <div className="lg:col-span-5">
+            <p className="text-sm font-semibold text-blue-400 uppercase tracking-wide">The work</p>
+            <h2 className="mt-5 text-4xl lg:text-5xl font-semibold tracking-[-0.03em] leading-tight">Work on AI as a system, not just a model.</h2>
+            <p className="mt-6 text-lg text-slate-300 leading-relaxed">Teams can work across the full path from product problem and data to model behavior, software experience, deployment and continuous improvement.</p>
+          </div>
+          <div className="lg:col-span-7 border border-white/10">
+            {["AI-native applications and copilots", "RAG and enterprise knowledge systems", "AI CRM and ERP capabilities", "Machine-learning pipelines and evaluation", "AI-assisted cybersecurity", "Cloud, APIs, data and production infrastructure"].map((item, index) => (
+              <div key={item} className={`flex items-center gap-5 p-6 lg:p-7 ${index ? "border-t border-white/10" : ""}`}>
+                <span className="text-blue-400 text-sm font-semibold">0{index + 1}</span><span className="text-lg font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Phone Number"
-                className="w-full border border-slate-300 px-4 py-4"
-                required
-              />
+      <section id="apply" className="py-24 lg:py-32 bg-slate-50">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+          <div className="lg:col-span-4">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide">Apply</p>
+            <h2 className="mt-5 text-4xl lg:text-5xl font-semibold tracking-[-0.03em]">Tell us what you&apos;re good at.</h2>
+            <p className="mt-6 text-lg text-slate-600 leading-relaxed">Share your experience, the discipline you&apos;re interested in and a public resume link. The existing application workflow remains connected to Sicada&apos;s recruitment backend.</p>
+          </div>
 
-              <select
-                name="position"
-                value={formData.position}
-                onChange={handleChange}
-                className="w-full border border-slate-300 px-4 py-4"
-                required
-              >
-                <option value="">Select Position</option>
-                {jobs.map((job) => (
-                  <option key={job} value={job}>
-                    {job}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="url"
-                name="linkedin"
-                value={formData.linkedin}
-                onChange={handleChange}
-                placeholder="LinkedIn Profile URL"
-                className="w-full border border-slate-300 px-4 py-4"
-              />
-
-              <input
-                type="url"
-                name="resumeLink"
-                value={formData.resumeLink}
-                onChange={handleChange}
-                placeholder="Resume Link / Google Drive Link"
-                className="w-full border border-slate-300 px-4 py-4"
-                required
-              />
-
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Message / Experience"
-                rows="5"
-                className="w-full border border-slate-300 px-4 py-4"
-              />
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 font-semibold transition disabled:opacity-60"
-              >
-                {loading ? "Submitting..." : "Submit Application"}
-              </button>
+          <div className="lg:col-span-8 bg-white border border-slate-300 p-7 sm:p-10 lg:p-12">
+            <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-6">
+              <label className="block"><span className="block text-sm font-semibold mb-2">Full name</span><input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" required /></label>
+              <label className="block"><span className="block text-sm font-semibold mb-2">Email address</span><input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" required /></label>
+              <label className="block"><span className="block text-sm font-semibold mb-2">Phone number</span><input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" required /></label>
+              <label className="block"><span className="block text-sm font-semibold mb-2">Area of interest</span><select name="position" value={formData.position} onChange={handleChange} className="w-full border border-slate-300 px-4 py-4 bg-white focus:border-blue-600" required><option value="">Select a role</option>{jobs.map((job) => <option key={job} value={job}>{job}</option>)}</select></label>
+              <label className="block"><span className="block text-sm font-semibold mb-2">LinkedIn profile</span><input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://" className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" /></label>
+              <label className="block"><span className="block text-sm font-semibold mb-2">Resume link</span><input type="url" name="resumeLink" value={formData.resumeLink} onChange={handleChange} placeholder="Shareable Drive or Dropbox link" className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" required /></label>
+              <label className="block sm:col-span-2"><span className="block text-sm font-semibold mb-2">Experience / message</span><textarea name="message" value={formData.message} onChange={handleChange} rows="6" placeholder="Tell us about the problems you like solving, relevant experience or projects." className="w-full border border-slate-300 px-4 py-4 focus:border-blue-600" /></label>
+              <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center gap-5">
+                <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold disabled:opacity-60">{loading ? "Submitting..." : "Submit application"}</button>
+                <p className="text-sm text-slate-500">Please make your resume link accessible to reviewers.</p>
+              </div>
             </form>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="bg-slate-950 text-white p-12 lg:p-16 text-center">
-            <Globe2 className="mx-auto text-blue-400" size={48} />
-
-            <h2 className="mt-8 text-4xl lg:text-5xl font-semibold">
-              Build your future with Sicada Digital.
-            </h2>
-
-            <p className="mt-6 text-xl text-slate-300">
-              Join a team focused on software, cloud, AI and digital innovation.
-            </p>
-
-            <a
-              href="#apply"
-              className="inline-flex items-center gap-2 mt-10 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 font-semibold transition"
-            >
-              Apply now <ArrowRight size={18} />
-            </a>
+      <section className="bg-blue-600 text-white">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-8">
+            <div className="flex items-center gap-3 text-blue-100"><Users size={22} /><span className="text-sm uppercase tracking-wide font-semibold">Build with us</span></div>
+            <h2 className="mt-4 text-4xl lg:text-5xl font-semibold tracking-[-0.03em]">Interested in where AI engineering is going next?</h2>
           </div>
+          <div className="lg:col-span-4 lg:text-right"><a href="#apply" className="inline-flex items-center gap-3 bg-white text-slate-950 px-7 py-4 font-semibold hover:bg-slate-100">Submit your profile <ArrowRight size={18} /></a></div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
