@@ -9,6 +9,7 @@ import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import Foot from "./components/Foot";
 import Navbar from "./components/Navbar";
+import SicadaChat from "./components/SicadaChat";
 import Industries from "./pages/Industries";
 import CaseStudies from "./pages/CaseStudies";
 import Insights from "./pages/Insights";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
       </Routes>
       <Foot />
+      <SicadaChat />
     </BrowserRouter>
   );
 }
