@@ -1,6 +1,107 @@
 const MAX_MESSAGE_LENGTH = 1200;
 const MAX_HISTORY_ITEMS = 8;
 
+const SICADA_TERMS = [
+  "sicada",
+  "your company",
+  "your services",
+  "your solution",
+  "your team",
+  "what do you do",
+  "what can you do",
+  "services",
+  "capabilities",
+  "case study",
+  "case studies",
+  "industry",
+  "industries",
+  "contact",
+  "consultation",
+];
+
+const BUSINESS_TERMS = [
+  "our company",
+  "our business",
+  "our organization",
+  "we need",
+  "we want",
+  "we are planning",
+  "we're planning",
+  "existing crm",
+  "existing erp",
+  "crm",
+  "erp",
+  "ai",
+  "artificial intelligence",
+  "machine learning",
+  "ml",
+  "llm",
+  "rag",
+  "agent",
+  "automation",
+  "automate",
+  "prediction",
+  "predictive",
+  "computer vision",
+  "cybersecurity",
+  "security",
+  "threat detection",
+  "fraud",
+  "cloud",
+  "data engineering",
+  "integration",
+  "integrate",
+  "software",
+  "application",
+  "app",
+  "workflow",
+  "process",
+  "modernize",
+  "modernise",
+  "digital transformation",
+];
+
+const CODE_TERMS = [
+  "write code",
+  "generate code",
+  "give me code",
+  "source code",
+  "python code",
+  "javascript code",
+  "typescript code",
+  "java code",
+  "react code",
+  "sql query",
+  "debug this code",
+  "fix this code",
+  "program this",
+  "coding problem",
+  "leetcode",
+];
+
+const GENERAL_OFF_TOPIC_TERMS = [
+  "weather",
+  "president",
+  "prime minister",
+  "cricket",
+  "football",
+  "movie",
+  "song",
+  "recipe",
+  "joke",
+  "astrology",
+  "horoscope",
+  "homework",
+  "math problem",
+  "translate this",
+  "write an essay",
+  "write a poem",
+  "write a story",
+];
+
+const OUT_OF_SCOPE_REPLY =
+  "I’m Sicada’s AI solutions assistant. I can help with Sicada’s capabilities or discuss how AI, ML, LLMs, CRM, ERP, automation, software engineering or cybersecurity could support your organization. I don’t provide code or answer unrelated general-purpose questions.";
+
 function normalizeHistory(history) {
   if (!Array.isArray(history)) return [];
 
@@ -8,6 +109,38 @@ function normalizeHistory(history) {
     .filter((item) => item && (item.role === "user" || item.role === "assistant") && typeof item.text === "string")
     .slice(-MAX_HISTORY_ITEMS)
     .map((item) => ({ role: item.role, text: item.text.slice(0, MAX_MESSAGE_LENGTH) }));
+}
+
+function includesAny(text, terms) {
+  return terms.some((term) => text.includes(term));
+}
+
+function classifyDomain(message, history) {
+  const text = message.toLowerCase();
+  const recentContext = history
+    .filter((item) => item.role === "user")
+    .map((item) => item.text.toLowerCase())
+    .join(" ");
+
+  const combined = `${recentContext} ${text}`;
+
+  if (includesAny(text, CODE_TERMS)) {
+    return "OUT_OF_SCOPE";
+  }
+
+  if (includesAny(text, GENERAL_OFF_TOPIC_TERMS) && !includesAny(combined, BUSINESS_TERMS) && !includesAny(combined, SICADA_TERMS)) {
+    return "OUT_OF_SCOPE";
+  }
+
+  if (includesAny(combined, SICADA_TERMS)) {
+    return "SICADA";
+  }
+
+  if (includesAny(combined, BUSINESS_TERMS)) {
+    return "BUSINESS_REQUIREMENT";
+  }
+
+  return "OUT_OF_SCOPE";
 }
 
 function detectLeadIntent(message, history) {
@@ -125,6 +258,20 @@ export async function onRequestPost(context) {
       return Response.json({ error: "Message is too long." }, { status: 400 });
     }
 
+    const domain = classifyDomain(message, history);
+
+    if (domain === "OUT_OF_SCOPE") {
+      return Response.json({
+        reply: OUT_OF_SCOPE_REPLY,
+        source: "sicada-domain-gate",
+        model: null,
+        domain,
+        leadIntent: "low",
+        nextStep: null,
+        blocked: true,
+      });
+    }
+
     const leadIntent = detectLeadIntent(message, history);
     const reply = localAnswer(message, history);
     const nextStep = nextStepForIntent(leadIntent);
@@ -133,8 +280,10 @@ export async function onRequestPost(context) {
       reply,
       source: "sicada-curated",
       model: null,
+      domain,
       leadIntent,
       nextStep,
+      blocked: false,
     });
   } catch {
     return Response.json({ error: "Invalid request." }, { status: 400 });
