@@ -10,6 +10,8 @@ function Navbar() {
     { name: "AI CRM & ERP", href: "/services#enterprise-ai" },
     { name: "Cybersecurity", href: "/services#cybersecurity" },
     { name: "Industries", href: "/industries" },
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Insights", href: "/insights" },
     { name: "About", href: "/about" },
     { name: "Careers", href: "/careers" },
   ];
@@ -21,7 +23,7 @@ function Navbar() {
           <img src={logo} alt="Sicada Digital" className="h-10 w-auto" />
         </a>
 
-        <nav className="hidden xl:flex items-center gap-8 text-[14px] font-medium text-slate-700">
+        <nav className="hidden 2xl:flex items-center gap-7 text-[14px] font-medium text-slate-700">
           {links.map((link) => (
             <a key={link.name} href={link.href} className="hover:text-blue-700 transition-colors">
               {link.name}
@@ -31,14 +33,14 @@ function Navbar() {
 
         <a
           href="/contact"
-          className="hidden xl:inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-sm font-semibold transition-colors shrink-0"
+          className="hidden 2xl:inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-sm font-semibold transition-colors shrink-0"
         >
           Talk to our team
         </a>
 
         <button
           onClick={() => setOpen(!open)}
-          className="xl:hidden border border-slate-300 p-2 text-slate-900"
+          className="2xl:hidden border border-slate-300 p-2 text-slate-900"
           aria-label="Toggle navigation"
           aria-expanded={open}
         >
@@ -47,7 +49,7 @@ function Navbar() {
       </div>
 
       {open && (
-        <div className="xl:hidden bg-white border-t border-slate-200 px-6 py-7 shadow-lg">
+        <div className="2xl:hidden bg-white border-t border-slate-200 px-6 py-7 shadow-lg">
           <nav className="flex flex-col gap-5 text-base font-medium text-slate-800">
             {links.map((link) => (
               <a key={link.name} href={link.href} onClick={() => setOpen(false)} className="hover:text-blue-700">
