@@ -52,6 +52,8 @@ function Foot() {
           <div className="lg:col-span-2">
             <h4 className="text-white font-semibold mb-5">Company</h4>
             <ul className="space-y-3 text-slate-400 text-sm">
+              <li><a href="/case-studies" className="hover:text-white transition-colors">Case Studies</a></li>
+              <li><a href="/insights" className="hover:text-white transition-colors">Insights</a></li>
               <li><a href="/about" className="hover:text-white transition-colors">About</a></li>
               <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
               <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
