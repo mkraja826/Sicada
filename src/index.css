@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 html {
@@ -13,9 +13,9 @@ body {
   overflow-x: hidden;
   background: #ffffff;
   color: #0f172a;
-  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-family: "Source Sans 3", "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -23,23 +23,34 @@ body {
 h1,
 h2,
 h3 {
-  font-family: "Inter Tight", "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-family: "IBM Plex Sans", "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.025em;
   text-wrap: balance;
+}
+
+h1 {
+  letter-spacing: -0.032em !important;
+}
+
+h2 {
+  letter-spacing: -0.024em !important;
+}
+
+h3 {
+  letter-spacing: -0.016em !important;
 }
 
 h4,
 h5,
 h6 {
-  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Source Sans 3", "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 p,
 li {
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
 }
 
 img,
@@ -64,7 +75,8 @@ textarea {
 
 button,
 nav a {
-  letter-spacing: -0.01em;
+  font-family: "Source Sans 3", "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
 }
 
 a:focus-visible,
