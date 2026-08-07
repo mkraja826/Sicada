@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 html {
@@ -12,9 +13,33 @@ body {
   overflow-x: hidden;
   background: #ffffff;
   color: #0f172a;
-  font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Inter Tight", "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h4,
+h5,
+h6 {
+  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+p,
+li {
+  letter-spacing: -0.005em;
 }
 
 img,
@@ -35,6 +60,11 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+button,
+nav a {
+  letter-spacing: -0.01em;
 }
 
 a:focus-visible,
