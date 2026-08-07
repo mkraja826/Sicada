@@ -43,6 +43,9 @@ export default function SicadaChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [nextStep, setNextStep] = useState(null);
+  const [showLeadForm, setShowLeadForm] = useState(false);
+  const [leadStatus, setLeadStatus] = useState("idle");
+  const [lead, setLead] = useState({ name: "", email: "", company: "", project: "" });
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -77,6 +80,7 @@ export default function SicadaChat() {
 
       setMessages((current) => [...current, { role: "assistant", text: reply }]);
       setNextStep(data?.nextStep || null);
+      if (data?.leadIntent === "high") setShowLeadForm(true);
     } catch {
       setMessages((current) => [...current, { role: "assistant", text: getLocalAnswer(message) }]);
     } finally {
@@ -87,6 +91,43 @@ export default function SicadaChat() {
   function handleSubmit(event) {
     event.preventDefault();
     submitMessage(input);
+  }
+
+  async function submitLead(event) {
+    event.preventDefault();
+    if (!lead.name.trim() || !lead.email.trim() || !lead.project.trim()) return;
+
+    setLeadStatus("submitting");
+
+    const conversationSummary = messages
+      .slice(-8)
+      .map((message) => `${message.role === "user" ? "Visitor" : "Sicada AI"}: ${message.text}`)
+      .join("\n");
+
+    try {
+      const response = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: lead.name.trim(),
+          email: lead.email.trim(),
+          company: lead.company.trim(),
+          service: "Sicada AI consultation",
+          message: `${lead.project.trim()}\n\nChat context:\n${conversationSummary}`,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Lead storage unavailable");
+
+      setLeadStatus("success");
+      setShowLeadForm(false);
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", text: "Thanks. Your project details have been shared with the Sicada team." },
+      ]);
+    } catch {
+      setLeadStatus("fallback");
+    }
   }
 
   return (
@@ -139,12 +180,45 @@ export default function SicadaChat() {
               </div>
             )}
 
-            {nextStep && !loading && (
+            {nextStep && !loading && !showLeadForm && (
               <div className="border border-blue-200 bg-blue-50 p-4">
                 <p className="text-sm text-slate-700 leading-relaxed">{nextStep.message}</p>
-                <a href={nextStep.href} className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">
-                  {nextStep.label} <ArrowRight size={16} />
-                </a>
+                <div className="mt-3 flex flex-wrap gap-4">
+                  {nextStep.href === "/contact" && (
+                    <button type="button" onClick={() => setShowLeadForm(true)} className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700">
+                      Share project details <ArrowRight size={16} />
+                    </button>
+                  )}
+                  <a href={nextStep.href} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    {nextStep.label} <ArrowRight size={16} />
+                  </a>
+                </div>
+              </div>
+            )}
+
+            {showLeadForm && (
+              <form onSubmit={submitLead} className="bg-white border border-slate-300 p-4 space-y-3">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Share your project with Sicada</p>
+                  <p className="text-xs text-slate-500 mt-1">These details are submitted only when you press Send to Sicada.</p>
+                </div>
+                <input value={lead.name} onChange={(e) => setLead({ ...lead, name: e.target.value })} required placeholder="Name" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
+                <input value={lead.email} onChange={(e) => setLead({ ...lead, email: e.target.value })} required type="email" placeholder="Work email" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
+                <input value={lead.company} onChange={(e) => setLead({ ...lead, company: e.target.value })} placeholder="Company (optional)" className="w-full border border-slate-300 px-3 py-2.5 text-sm" />
+                <textarea value={lead.project} onChange={(e) => setLead({ ...lead, project: e.target.value })} required rows="3" placeholder="Briefly describe what you want to build or improve" className="w-full border border-slate-300 px-3 py-2.5 text-sm resize-none" />
+                <div className="flex gap-3 items-center">
+                  <button type="submit" disabled={leadStatus === "submitting"} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-4 py-2.5 text-sm font-semibold">
+                    {leadStatus === "submitting" ? "Sending…" : "Send to Sicada"}
+                  </button>
+                  <button type="button" onClick={() => setShowLeadForm(false)} className="text-sm font-semibold text-slate-600">Cancel</button>
+                </div>
+              </form>
+            )}
+
+            {leadStatus === "fallback" && (
+              <div className="border border-amber-200 bg-amber-50 p-4">
+                <p className="text-sm text-slate-700">The direct enquiry service is temporarily unavailable. Your details were not stored.</p>
+                <a href="/contact" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">Continue on Contact page <ArrowRight size={16} /></a>
               </div>
             )}
           </div>
@@ -170,7 +244,7 @@ export default function SicadaChat() {
                 <ArrowUp size={18} />
               </button>
             </div>
-            <p className="mt-2 text-[11px] text-slate-400">This assistant uses Sicada-approved information and does not store personal details from this chat.</p>
+            <p className="mt-2 text-[11px] text-slate-400">Chat messages are used only for this session unless you explicitly submit project details.</p>
           </form>
         </section>
       )}
